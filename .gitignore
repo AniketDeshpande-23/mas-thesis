@@ -48,3 +48,10 @@ Images/
 docs/
 TRULENS_GUIDE.md
 Error_*.png
+
+# Private MD files — local only, never push
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+THESIS_PLAN.md
+changes.md
