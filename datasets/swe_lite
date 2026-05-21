@@ -1,0 +1,73 @@
+from __future__ import annotations
+
+import json
+import urllib.request
+from pathlib import Path
+
+import pandas as pd
+
+
+TARGET_IDS = [
+    # easy
+    "django__django-11179",
+    "django__django-13230",
+    "sphinx-doc__sphinx-8595",
+    "sphinx-doc__sphinx-8721",
+    "sympy__sympy-21627",
+    # medium
+    "astropy__astropy-6938",
+    "astropy__astropy-12907",
+    "django__django-15814",
+    "django__django-12908",
+    "matplotlib__matplotlib-25433",
+    # hard
+    "astropy__astropy-14182",
+    "django__django-14672",
+    "django__django-11099",
+    "matplotlib__matplotlib-23913",
+    "matplotlib__matplotlib-26020",
+]
+
+
+def download_parquet(out_path: Path):
+    api_url = "https://huggingface.co/api/datasets/SWE-bench/SWE-bench_Lite/parquet"
+    meta = json.load(urllib.request.urlopen(api_url))
+    test_url = meta["default"]["test"][0]
+    urllib.request.urlretrieve(test_url, out_path)
+
+
+def main():
+    out_dir = Path("./datasets")
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    parquet_path = out_dir / "swebench_lite_test.parquet"
+    if not parquet_path.exists():
+        download_parquet(parquet_path)
+
+    df = pd.read_parquet(parquet_path)
+    sel = df[df["instance_id"].isin(TARGET_IDS)].copy()
+
+    # keep the exact order from TARGET_IDS
+    sel["order"] = sel["instance_id"].apply(TARGET_IDS.index)
+    sel = sel.sort_values("order").drop(columns=["order"])
+
+    csv_path = out_dir / "swe_lite_15_tasks.csv"
+    sel[
+        [
+            "instance_id",
+            "repo",
+            "base_commit",
+            "created_at",
+            "version",
+            "problem_statement",
+            "FAIL_TO_PASS",
+            "PASS_TO_PASS",
+        ]
+    ].to_csv(csv_path, index=False)
+
+    print(f"Saved → {csv_path}")
+    print(sel[["instance_id", "repo", "base_commit", "version"]].to_string(index=False))
+
+
+if __name__ == "__main__":
+    main()
