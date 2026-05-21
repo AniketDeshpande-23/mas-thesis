@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Secrets — never commit
+.env
+.env.*
+*.key
+*.pem
+
+# Large data / repos
+repos/
+datasets/*.json
+datasets/swe_lite/
+datasets/__pycache__/
+
+# Results JSONs (large, generated)
+results/*.json
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE / editor / tooling
+.claude/
+.code-review-graph/
+.cursorrules
+.windsurfrules
+.opencode.json
+.mcp.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Analytics generated output
+analytics/out/
+
+# Misc large files
+*.png
+Images/
+docs/
+TRULENS_GUIDE.md
+Error_*.png
