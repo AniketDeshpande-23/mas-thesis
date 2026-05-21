@@ -1,0 +1,7 @@
+task_id,model_name,mode,run_number,overall_status,syntax_valid,code_extracted,tests_run,tests_failed,reviewer_approved,debug_iterations,duration_seconds,difficulty,repo,language,patch_score,file_recall,content_overlap,gold_patch_size
+django__django-11179,qwen3-coder,mas,1,COMPLETED,True,True,4,0,False,1,118.63,easy,django/django,unknown,0.6,1.0,0.0,1
+django__django-13230,qwen3-coder,mas,1,COMPLETED,True,True,4,0,False,1,43.21,easy,django/django,unknown,0.6,1.0,0.0,1
+sphinx-doc__sphinx-8595,qwen3-coder,mas,1,COMPLETED,True,True,4,0,False,1,54.9,easy,sphinx-doc/sphinx,unknown,0.0,0.0,0.0,2
+django__django-11179,qwen3-coder,single,1,COMPLETED,True,True,4,0,False,0,16.1,easy,django/django,unknown,0.6,1.0,0.0,1
+django__django-13230,qwen3-coder,single,1,COMPLETED,True,True,4,0,False,0,509.84,easy,django/django,unknown,0.6,1.0,0.0,1
+sphinx-doc__sphinx-8595,qwen3-coder,single,1,COMPLETED,True,True,4,0,False,0,25.98,easy,sphinx-doc/sphinx,unknown,0.6,1.0,0.0,2

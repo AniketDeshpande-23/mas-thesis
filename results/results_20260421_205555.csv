@@ -1,0 +1,13 @@
+task_id,model_name,mode,run_number,overall_status,syntax_valid,code_extracted,tests_run,tests_failed,reviewer_approved,debug_iterations,duration_seconds,difficulty,repo,language
+django__django-11179,qwen3.6,mas,1,FAILED,False,True,0,0,True,1,686.32,,,
+django__django-13230,qwen3.6,mas,1,ERROR,False,False,0,0,False,0,1395.61,,,
+sphinx-doc__sphinx-8595,qwen3.6,mas,1,FAILED,False,True,0,0,True,1,848.18,,,
+django__django-11179,qwen3.6,single,1,FAILED,False,True,0,0,False,0,154.92,,,
+django__django-13230,qwen3.6,single,1,ERROR,False,False,0,0,False,0,848.8,,,
+sphinx-doc__sphinx-8595,qwen3.6,single,1,FAILED,False,True,0,0,False,0,171.19,,,
+django__django-11179,qwen3-coder,mas,1,FAILED,False,True,0,0,False,1,216.92,,,
+django__django-13230,qwen3-coder,mas,1,FAILED,False,True,0,0,False,1,214.54,,,
+sphinx-doc__sphinx-8595,qwen3-coder,mas,1,ERROR,False,False,0,0,False,0,503.05,,,
+django__django-11179,qwen3-coder,single,1,ERROR,False,False,0,0,False,0,28.62,,,
+django__django-13230,qwen3-coder,single,1,FAILED,False,True,0,0,False,0,400.12,,,
+sphinx-doc__sphinx-8595,qwen3-coder,single,1,ERROR,False,False,0,0,False,0,10.97,,,
