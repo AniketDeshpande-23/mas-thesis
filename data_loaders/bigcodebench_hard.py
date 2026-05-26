@@ -30,13 +30,6 @@ class BigCodeBenchHard(BaseDataset):
             print(f"[Dataset] Hard split unavailable ({e}). Using full dataset.")
             pool = list(load_dataset("bigcode/bigcodebench", split="v0.1.4"))
 
-        # ── DEBUG: print all available column names from first item ──────────
-        if pool:
-            print(f"[Dataset] Available columns: {list(pool[0].keys())}")
-            # Print test field preview to confirm it's populated
-            raw_test = pool[0].get("test", "")
-            print(f"[Dataset] 'test' field preview: {repr(raw_test[:200]) if raw_test else 'EMPTY!'}")
-
         random.seed(self.seed)
         sample = random.sample(pool, min(self.sample_size, len(pool)))
 
