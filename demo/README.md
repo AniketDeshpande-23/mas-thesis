@@ -73,6 +73,18 @@ Full experiment results (Runs E–M) are in `results/` at the repo root.
 
 ---
 
+## Notes
+
+**First run downloads the benchmark dataset** — `datasets/swebench_pro_cache.json` is not
+included in the repo (25 MB). On first run the script downloads it automatically from
+HuggingFace and caches it locally. Expect an extra 5–10 minutes on first run only.
+
+**nginx proxy timeout must be raised before running** — the default `proxy_read_timeout`
+is 60s. Model inference takes 90–600s per call. Set `proxy_read_timeout 900s` in the
+nginx config on the pod (requires admin access).
+
+---
+
 ## Troubleshooting
 
 **Timeout errors** — the nginx proxy has a default 60s `proxy_read_timeout`.

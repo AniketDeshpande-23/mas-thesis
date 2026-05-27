@@ -1,7 +1,7 @@
 @echo off
-echo ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-echo  MAS vs Single LLM — Demo Setup
-echo ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+echo -------------------------------------------------------
+echo  MAS vs Single LLM -- Demo Setup
+echo -------------------------------------------------------
 
 :: Move to repo root (one level up from demo\)
 cd /d "%~dp0.."
@@ -37,7 +37,7 @@ if not exist "demo\.env" (
 )
 
 echo.
-echo ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+echo -------------------------------------------------------
 echo  Setup complete!
 echo.
 echo  Next steps:
