@@ -36,11 +36,3 @@ cd mas-thesis && git pull
 python demo/run_demo.py
 ```
 
-## Troubleshooting
-
-| Problem | Fix |
-|---------|-----|
-| 500 on `/api/tags` | Ollama not running on that pod |
-| 403 on `/api/tags` | Token invalid — regenerate from Hub Control Panel |
-| No model found | `ollama pull gemma4:27b` on the pod |
-| Timeout errors | Raise nginx `proxy_read_timeout 900s` on the pod |
