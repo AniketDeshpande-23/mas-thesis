@@ -27,14 +27,19 @@ OLLAMA_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 TOKEN      = os.getenv("JUPYTERHUB_TOKEN", "")
 HEADERS    = {"Authorization": f"Bearer {TOKEN}"} if TOKEN else {}
 
-# Priority list — first model found on the pod wins
+# Priority list — first model found on the pod wins.
+# Each model listed twice: colon form (ollama pull) and hyphen form (how Ollama API returns it).
 MODEL_PRIORITY = [
     ("qwen3-coder-next", "Qwen3CoderNextLocal"),
     ("qwen3-coder",      "Qwen3Coder"),
     ("qwen3.5:27b",      "Qwen35_27B"),
+    ("qwen3.5-27b",      "Qwen35_27B"),
     ("qwen3.5:9b",       "Qwen35_9B"),
+    ("qwen3.5-9b",       "Qwen35_9B"),
     ("gemma4:31b",       "Gemma4_31B"),
+    ("gemma4-31b",       "Gemma4_31B"),
     ("gemma4:27b",       "Gemma4_27B"),
+    ("gemma4-27b",       "Gemma4_27B"),
     ("glm-4.7-flash",    "GLM47Flash"),
 ]
 
@@ -64,17 +69,17 @@ if llm is None:
 print(f"  Ollama  : {OLLAMA_URL}")
 print(f"  Model   : {llm.name}")
 
-# ── Dataset: 3-task smoke test (NodeBB JS / ansible Python / flipt Go) ─
-from data_loaders.swebench_pro import SWEBenchPro
-DATASET = SWEBenchPro(
+# ── Dataset: 3 tasks (1 easy + 1 medium + 1 hard) from SWE-bench Lite ──
+# SWEBenchLite loads from a parquet file shipped with the repo — no cache
+# download or HuggingFace account required.
+from data_loaders.swebench_lite import SWEBenchLite
+DATASET = SWEBenchLite(
     sample_size=3,
     seed=42,
-    use_test_subset=True,
-    smoke_test=True,
     cache_dir=os.path.join(_REPO, "datasets"),
 )
 tasks = DATASET.load()
-print(f"  Tasks   : {len(tasks)} (smoke test — 1 easy, 1 medium, 1 hard)")
+print(f"  Tasks   : {len(tasks)} (1 easy + 1 medium + 1 hard)")
 print(f"{'━' * 60}")
 
 # ── Pipeline imports ────────────────────────────────────────────────────
@@ -96,7 +101,7 @@ for task in tasks:
 
         row = {
             "task_id":          task.task_id,
-            "difficulty":       inst.difficulty.value if inst else "unknown",
+            "difficulty":       getattr(inst.difficulty, "value", str(inst.difficulty)) if inst else "unknown",
             "mode":             mode,
             "model":            llm.name,
             "patch_score":      round(sim["patch_score"], 4),
