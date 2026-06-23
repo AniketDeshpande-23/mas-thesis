@@ -18,23 +18,19 @@ cp demo/.env.example demo/.env  # Windows: copy demo\.env.example demo\.env
 Edit `demo/.env`:
 
 ```
-# URL of the pod where Ollama is running — NOT your own pod if it has no model
-OLLAMA_BASE_URL=https://jupyterhub.ki-awz.iisys.de/user/tbuchmann@hof-university.de/proxy/11434
-
-# YOUR OWN token — JupyterHub > File > Hub Control Panel > Token > Request new API token
-JUPYTERHUB_TOKEN=<paste-your-token-here>
+OLLAMA_BASE_URL=https://jupyterhub.ki-awz.iisys.de/user/<your-username>@hof-university.de/proxy/11434
+JUPYTERHUB_TOKEN=<your-token>
 ```
 
-> **Note:** `OLLAMA_BASE_URL` points to the pod with Ollama (prof's pod). `JUPYTERHUB_TOKEN` is your own token.
+Get your token: **JupyterHub → File → Hub Control Panel → Token → Request new API token**
 
-## Verify connection first
+## Verify connection
 
 ```bash
-curl -H "Authorization: Bearer <your-token>" \
-  https://jupyterhub.ki-awz.iisys.de/user/tbuchmann@hof-university.de/proxy/11434/api/tags
+curl -H "Authorization: Bearer <your-token>" <OLLAMA_BASE_URL>/api/tags
 ```
 
-Should return JSON with model list. If 403/500 → ask prof to share a service token.
+Should return a JSON list of available models.
 
 ## Run
 
