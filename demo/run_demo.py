@@ -22,50 +22,45 @@ import agents.orchestrator as _orch
 _orch.USE_AGENT_TOOLS = False   # no MCP server on demo machine
 _orch.AGENT_LLM_MAP   = None    # single model for all roles (simpler demo)
 
-# ── Ollama: health check + auto-detect best available model ────────────
+# ── Ollama: health check + pick first available model ──────────────────
 OLLAMA_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 TOKEN      = os.getenv("JUPYTERHUB_TOKEN", "")
 HEADERS    = {"Authorization": f"Bearer {TOKEN}"} if TOKEN else {}
 
-# Priority list — first model found on the pod wins.
-# Each model listed twice: colon form (ollama pull) and hyphen form (how Ollama API returns it).
-MODEL_PRIORITY = [
-    ("qwen3-coder-next", "Qwen3CoderNextLocal"),
-    ("qwen3-coder",      "Qwen3Coder"),
-    ("qwen3.5:27b",      "Qwen35_27B"),
-    ("qwen3.5-27b",      "Qwen35_27B"),
-    ("qwen3.5:9b",       "Qwen35_9B"),
-    ("qwen3.5-9b",       "Qwen35_9B"),
-    ("gemma4:31b",       "Gemma4_31B"),
-    ("gemma4-31b",       "Gemma4_31B"),
-    ("gemma4:27b",       "Gemma4_27B"),
-    ("gemma4-27b",       "Gemma4_27B"),
-    ("glm-4.7-flash",    "GLM47Flash"),
-]
-
 try:
     resp   = requests.get(f"{OLLAMA_URL}/api/tags", headers=HEADERS, timeout=15)
     resp.raise_for_status()
-    pulled = {m["name"] for m in resp.json().get("models", [])}
+    models = resp.json().get("models", [])
 except Exception as exc:
     print(f"\nERROR: Cannot reach Ollama at {OLLAMA_URL}")
     print(f"  Cause: {exc}")
     print("  Check OLLAMA_BASE_URL and JUPYTERHUB_TOKEN in demo/.env")
     sys.exit(1)
 
-llm = None
-for tag, cls_name in MODEL_PRIORITY:
-    if any(tag in name for name in pulled):
-        mod = __import__("agents.models", fromlist=[cls_name])
-        llm = getattr(mod, cls_name)()
-        break
-
-if llm is None:
-    print(f"\nERROR: No supported model found on Ollama at {OLLAMA_URL}")
-    print(f"  Models currently pulled: {sorted(pulled) or '(none)'}")
-    print("  Pull a model on the pod:  ollama pull qwen3-coder:latest")
+if not models:
+    print(f"\nERROR: No models pulled on Ollama at {OLLAMA_URL}")
+    print("  Run: ollama pull <model-name>")
     sys.exit(1)
 
+# Use whatever model is available — no hardcoded priority list
+from crewai import LLM as _CrewLLM
+from agents.models import BaseLLM as _BaseLLM
+
+_model_name = models[0]["name"]
+
+class _AutoLLM(_BaseLLM):
+    @property
+    def name(self): return _model_name
+    @property
+    def crewai_llm(self):
+        return _CrewLLM(
+            model=f"ollama/{_model_name}",
+            base_url=OLLAMA_URL,
+            temperature=0.15,
+            max_tokens=8192,
+        )
+
+llm = _AutoLLM()
 print(f"  Ollama  : {OLLAMA_URL}")
 print(f"  Model   : {llm.name}")
 
