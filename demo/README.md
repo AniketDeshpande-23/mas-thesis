@@ -36,27 +36,6 @@ cd mas-thesis && git pull
 python demo/run_demo.py
 ```
 
-## What it runs
-
-| | MAS Pipeline | Single LLM |
-|-|---|---|
-| **Agents** | Planner → Developer → Tester → Debugger → Reviewer | Solo Developer |
-| **Iterations** | Difficulty-adaptive (easy: 2, medium: 3, hard: 4) | Same |
-| **Evaluation** | Static Tester (no Docker) | Same |
-
-## Output metrics
-
-| Column | Definition |
-|--------|-----------|
-| `patch_score` | `0.6 × file_recall + 0.4 × content_overlap` |
-| `file_recall` | Fraction of gold-patch files correctly identified |
-| `content_overlap` | Token-level Jaccard similarity of changed lines |
-| `debug_iterations` | Debugger→DevRefine cycles run |
-
-## Supported models (auto-detected)
-
-`qwen3-coder-next` · `qwen3-coder` · `qwen3.5:27b` · `qwen3.5:9b` · `gemma4:27b` · `gemma4:31b` · `glm-4.7-flash`
-
 ## Troubleshooting
 
 | Problem | Fix |
