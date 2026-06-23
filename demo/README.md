@@ -4,7 +4,7 @@ Runs 3 SWE-bench tasks (easy / medium / hard) under both MAS and Single LLM arch
 
 No GPU, no Docker, no API keys needed.
 
-## Setup
+## Step 1 — Clone and install
 
 ```bash
 git clone https://github.com/AniketDeshpande-23/mas-thesis.git
@@ -12,6 +12,11 @@ cd mas-thesis
 python -m venv venv
 source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+## Step 2 — Configure credentials
+
+```bash
 cp demo/.env.example demo/.env  # Windows: copy demo\.env.example demo\.env
 ```
 
@@ -24,22 +29,33 @@ JUPYTERHUB_TOKEN=<your-token>
 
 Get your token: **JupyterHub → File → Hub Control Panel → Token → Request new API token**
 
-## Verify connection
+## Step 3 — Verify Ollama connection
 
 ```bash
 curl -H "Authorization: Bearer <your-token>" <OLLAMA_BASE_URL>/api/tags
 ```
 
-Should return a JSON list of available models.
+Should return a JSON list of available models. If it fails, check the troubleshooting table below.
 
-## Run
+## Step 4 — Run
 
 ```bash
-source venv/bin/activate   # Windows: venv\Scripts\activate
-python demo/run_demo.py    # Windows: python demo\run_demo.py
+source venv/bin/activate        # Windows: venv\Scripts\activate
+python demo/run_demo.py         # Windows: python demo\run_demo.py
 ```
 
-6 pipeline runs (3 tasks × 2 modes). Results → `demo/demo_results/demo_TIMESTAMP.csv`. Runtime: 20–50 min.
+6 pipeline runs (3 tasks × 2 modes). Results saved to `demo/demo_results/demo_TIMESTAMP.csv`. Runtime: 20–50 min.
+
+## If you already cloned the repo
+
+```bash
+cd mas-thesis
+git pull
+source venv/bin/activate
+pip install -r requirements.txt   # only needed if requirements changed
+# configure demo/.env as above, then:
+python demo/run_demo.py
+```
 
 ## Supported models (auto-detected)
 
